@@ -1,0 +1,80 @@
+{
+  "as_of_date": "2026-07-06",
+  "privacy": {
+    "id_salt_env": "PHM_ID_SALT",
+    "default_demo_salt": "CHANGE_ME_BEFORE_INTERNAL_USE",
+    "patient_row_limit_for_public_json": 500,
+    "minimum_group_size_for_public_counts": 11
+  },
+  "paths": {
+    "raw_dir": "raw",
+    "output_json": "data/phm_dashboard_safe.json",
+    "appointment_csv": "Famco Appointment data.csv",
+    "diagnosis_csv": "Famco All Patient Diagnosis.csv",
+    "lab_csv": "Famco Lab Result.csv",
+    "vital_csv": "All Patient Vital Sign.csv",
+    "bmi_xlsx": "All Patient Last Height_weight_Bmi.xlsx",
+    "urgent_xlsx": "FCMC Urgent care unit.xlsx",
+    "admission_xlsx": "Admission from june to may.xlsx"
+  },
+  "diabetes_rules": {
+    "diagnosis_code_prefixes": ["E10", "E11", "E12", "E13", "E14"],
+    "diagnosis_text_regex": "\\b(diabetes|diabetic|t2dm|t1dm|dm2|dm type 2|type 2 dm|type ii diabetes)\\b",
+    "hba1c_confirmed_threshold": 6.5,
+    "hba1c_high_risk_threshold": 9.0,
+    "fbs_confirmed_threshold_mg_dl": 126,
+    "fbs_repeated_count": 2
+  },
+  "care_gap_rules": {
+    "hba1c_overdue_days": 180,
+    "lipid_overdue_days": 365,
+    "renal_overdue_days": 365,
+    "urine_acr_overdue_days": 365,
+    "bp_uncontrolled_sys": 140,
+    "bp_uncontrolled_dia": 90,
+    "bp_severe_sys": 160,
+    "bp_severe_dia": 100,
+    "bmi_high": 30,
+    "bmi_severe": 40,
+    "frequent_urgent_care_12m": 3,
+    "recent_admission_days": 365,
+    "missed_appointment_12m": 1,
+    "multiple_missed_12m": 2
+  },
+  "lab_item_map": {
+    "hba1c": ["Hemoglobin A1c", "HbA1c", "A1c"],
+    "fbs": ["Fasting Blood Glucose"],
+    "random_glucose": ["Random Blood Glucose"],
+    "egfr": ["Estimated Glomerular Filtration Rate"],
+    "creatinine": ["Creatinine"],
+    "urine_microalbumin": ["Urine Microalbumin"],
+    "urine_acr": ["Microalbumin/Creatinine Ratio"],
+    "cholesterol": ["Cholesterol"],
+    "triglycerides": ["Triglycerides"],
+    "ldl": ["LDL", "Low Density Lipoprotein"]
+  },
+  "old_lab_files": [
+    {
+      "path": "old_a1c.xlsx",
+      "test_key": "hba1c",
+      "enabled": false,
+      "has_header": false,
+      "mrn_col": 0,
+      "date_col": 11,
+      "result_col": null,
+      "threshold": 6.5,
+      "note": "Current old_a1c sample has no obvious numeric result column. Set result_col after confirming the source schema."
+    },
+    {
+      "path": "old_FBS.xlsx",
+      "test_key": "fbs",
+      "enabled": false,
+      "has_header": false,
+      "mrn_col": 0,
+      "date_col": 11,
+      "result_col": null,
+      "threshold": 126,
+      "note": "Current old_FBS sample has no obvious numeric result column. Set result_col after confirming the source schema."
+    }
+  ]
+}
