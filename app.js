@@ -4,13 +4,27 @@ const formatNumber = (value) => new Intl.NumberFormat('en-US').format(value);
 const riskClass = (risk) => risk.toLowerCase();
 
 async function loadData() {
-  const response = await fetch('data/sample_dashboard.json');
-  phmData = await response.json();
-  renderAll();
+  const dataFiles = ['data/phm_dashboard_safe.json', 'data/sample_dashboard.json'];
+  let lastError = null;
+  for (const file of dataFiles) {
+    try {
+      const response = await fetch(file, { cache: 'no-store' });
+      if (!response.ok) throw new Error(`${file}: ${response.status}`);
+      phmData = await response.json();
+      phmData.loadedFrom = file;
+      renderAll();
+      return;
+    } catch (err) {
+      lastError = err;
+      console.warn('Could not load', file, err);
+    }
+  }
+  throw lastError || new Error('No dashboard JSON found');
 }
 
 function renderAll() {
-  document.getElementById('lastUpdated').textContent = `Updated: ${phmData.lastUpdated}`;
+  const source = phmData.loadedFrom ? ` • ${phmData.loadedFrom}` : '';
+  document.getElementById('lastUpdated').textContent = `Updated: ${phmData.lastUpdated}${source}`;
   renderKpis();
   renderRiskBars();
   renderWorkQueue();
@@ -59,7 +73,7 @@ function renderDiabetesRows(rows) {
       <td>${row.age}</td>
       <td><span class="badge ${riskClass(row.risk)}">${row.risk}</span></td>
       <td>${row.hba1c ?? '—'}<div class="small">${row.hba1cDate ?? ''}</div></td>
-      <td>${row.ldl ?? '—'}</td>
+      <td>${row.ldl ?? row.lipid ?? '—'}<div class="small">${row.lipidDate ?? ''}</div></td>
       <td>${row.egfr ?? '—'}</td>
       <td>${row.bp ?? '—'}</td>
       <td>${row.bmi ?? '—'}</td>
@@ -119,5 +133,5 @@ setupNavigation();
 setupSearch();
 loadData().catch(err => {
   console.error(err);
-  document.querySelector('.content').innerHTML = '<div class="panel"><h2>Data load failed</h2><p>Check that data/sample_dashboard.json exists and that you are running through a local web server or GitHub Pages.</p></div>';
+  document.querySelector('.content').innerHTML = '<div class="panel"><h2>Data load failed</h2><p>Check that data/phm_dashboard_safe.json or data/sample_dashboard.json exists and that you are running through a local web server or GitHub Pages.</p></div>';
 });
