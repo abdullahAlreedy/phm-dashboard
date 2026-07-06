@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FAMCO PHM Dashboard MVP</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <h1>FAMCO PHM Dashboard</h1>
+      <p class="subtitle">Population Health Management MVP — demo data only</p>
+    </div>
+    <div class="header-actions">
+      <span class="badge safe">No PHI in demo</span>
+      <span id="lastUpdated" class="muted"></span>
+    </div>
+  </header>
+
+  <main class="layout">
+    <aside class="sidebar">
+      <nav>
+        <button class="nav-btn active" data-section="overview">Overview</button>
+        <button class="nav-btn" data-section="diabetes">Diabetes Registry</button>
+        <button class="nav-btn" data-section="caregaps">Care Gaps</button>
+        <button class="nav-btn" data-section="sources">Data Sources</button>
+      </nav>
+      <div class="notice">
+        <strong>Security note</strong>
+        <p>Use synthetic or aggregated data on GitHub Pages. Do not upload names, national IDs, mobile numbers, addresses, notes, or raw patient rows.</p>
+      </div>
+    </aside>
+
+    <section class="content">
+      <section id="overview" class="page active">
+        <div class="section-heading">
+          <h2>Executive Overview</h2>
+          <p>High-level PHM indicators for chronic disease follow-up.</p>
+        </div>
+        <div id="kpiCards" class="cards"></div>
+        <div class="grid-2">
+          <div class="panel">
+            <h3>Risk Distribution</h3>
+            <div id="riskBars" class="bars"></div>
+          </div>
+          <div class="panel">
+            <h3>Recommended Work Queue</h3>
+            <ul id="workQueue" class="work-queue"></ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="diabetes" class="page">
+        <div class="section-heading row-between">
+          <div>
+            <h2>Diabetes Registry</h2>
+            <p>Patients identified by diagnosis or lab evidence. Demo rows are synthetic.</p>
+          </div>
+          <input id="patientSearch" class="search" placeholder="Search masked patient ID or action..." />
+        </div>
+        <div class="panel table-panel">
+          <table>
+            <thead>
+              <tr>
+                <th>Patient</th>
+                <th>Age</th>
+                <th>Risk</th>
+                <th>HbA1c</th>
+                <th>LDL</th>
+                <th>eGFR</th>
+                <th>BP</th>
+                <th>BMI</th>
+                <th>Care Gaps</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="diabetesRows"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="caregaps" class="page">
+        <div class="section-heading">
+          <h2>Care Gap Engine</h2>
+          <p>Rules-based alerts that convert data into clinical action.</p>
+        </div>
+        <div id="careGapCards" class="gap-grid"></div>
+      </section>
+
+      <section id="sources" class="page">
+        <div class="section-heading">
+          <h2>Data Sources</h2>
+          <p>Planned ETL inputs for the PHM platform.</p>
+        </div>
+        <div class="panel table-panel">
+          <table>
+            <thead>
+              <tr>
+                <th>Source</th>
+                <th>Use</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="sourceRows"></tbody>
+          </table>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
